@@ -14,7 +14,7 @@ jobs:
       sprint: ${{ steps.sprint.outputs.SPRINT_NUMBER }}
     steps:
       - name: Set up GitHub Actions
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Check if sprint file exist
         run: bash .github/bin/check-sprint.sh
       - name: Get sprint number
@@ -27,11 +27,11 @@ jobs:
     if: ${{ needs.read_sprint_file.outputs.sprint == '12' }}
     steps:
       - name: Set up GitHub Actions
-        uses: actions/checkout@v2
-      - name: Use Node.js 18.x
-        uses: actions/setup-node@v1
+        uses: actions/checkout@v4
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v4
         with:
-          node-version: 18.x
+          node-version: 20.x
       - name: Get testing lib
         run: set -eu && git clone --depth 1 https://github.com/practicum-com/tests-12-public.git
       - name: Installing Dependencies
@@ -45,11 +45,11 @@ jobs:
     if: ${{ needs.read_sprint_file.outputs.sprint == '12' }}
     steps:
       - name: Set up GitHub Actions
-        uses: actions/checkout@v2
-      - name: Use Node.js 18.x
-        uses: actions/setup-node@v1
+        uses: actions/checkout@v4
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v4
         with:
-          node-version: 18.x
+          node-version: 20.x
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.6.0
         with:
