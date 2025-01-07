@@ -17,9 +17,9 @@ const createItem = (req, res) => {
         return res.status(badRequest).send({ message: err.message });
       } if (err.name === "DocumentNotFoundError") {
         return res.status(notFound).send({ message: err.message });
-      } 
+      }
         return res.status(serverError).send({ message: err.message });
-      
+
     })
   // .catch((err) => {
   //   console.error(err);
@@ -49,9 +49,9 @@ const updateItem = (req, res) => {
       return res.status(badRequest).send({ message: err.message });
     } if (err.name === "DocumentNotFoundError") {
       return res.status(notFound).send({ message: err.message });
-    } 
+    }
       return res.status(serverError).send({ message: err.message });
-    
+
   });
   // .catch((err) => {
   //   console.error(err);
@@ -73,9 +73,9 @@ const deleteItem = (req, res) => {
       return res.status(badRequest).send({ message: err.message });
     } if (err.name === "DocumentNotFoundError") {
       return res.status(notFound).send({ message: err.message });
-    } 
+    }
       return res.status(serverError).send({ message: err.message });
-    
+
   });
   // .catch((err) => {
   //   console.error(err);
