@@ -112,6 +112,7 @@ const dislikeItem = (req, res) => {
       { $pull: { likes: req.user._id } },
       { new: true }
     )
+    .orFail()
     .then((item) => res.status(200).send(item))
     .catch((err) => {
       console.error(err);
