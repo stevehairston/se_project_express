@@ -2,7 +2,6 @@ const User = require("../models/user");
 const { badRequest, notFound, serverError } = require("../utils/errors");
 
 const getUsers = (req, res) => {
-  const { userId } = req.params;
   User.find({})
     .then((users) => res.status(200).send(users))
     .catch((err) => {
