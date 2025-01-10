@@ -12,16 +12,17 @@ mongoose
   })
   .catch(console.error);
 
-  app.use(express.json());
-  app.use("/", mainRouter);
+app.use(express.json());
 
-  app.use((req, res, next) => {
-    req.user = {
-      _id: '6760e22b0f1df5e57bd03919'
-    };
-    next();
-  });
+app.use((req, res, next) => {
+  req.user = {
+    _id: "6760e22b0f1df5e57bd03919",
+  };
+  next();
+});
 
-  app.listen(PORT, () => {
-    console.log(`Server is running on ${PORT}`);
-  });
+app.use("/", mainRouter);
+
+app.listen(PORT, () => {
+  console.log(`Server is running on ${PORT}`);
+});

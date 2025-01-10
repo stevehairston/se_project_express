@@ -4,37 +4,23 @@ const { badRequest, notFound, serverError } = require("../utils/errors");
 const getUsers = (req, res) => {
   const { userId } = req.params;
   User.find({})
-    .then((users) => res.send(users).status(200).send(users))
+    .then((users) => res.status(200).send(users))
     .catch((err) => {
       console.error(err);
-      if (err.name === "CastError") {
-        return res.status(badRequest).send({ message: err.message });
-      } if (err.name === "DocumentNotFoundError") {
-        return res.status(notFound).send({ message: err.message });
-      }
-        return res.status(serverError).send({ message: err.message });
+      return res.status(serverError).send({ message: err.message });
     });
 };
 
 const createUser = (req, res) => {
   const { name, avatar } = req.body;
-
   User.create({ name, avatar })
     .then((user) => res.status(201).send(user))
     .catch((err) => {
-      if (err.name === "CastError") {
+      if (err.name === "ValidationError") {
         return res.status(badRequest).send({ message: err.message });
       }
-        return res.status(serverError).send({ message: err.message });
-
+      return res.status(serverError).send({ message: err.message });
     });
-    // .catch((err) => {
-    //   console.error(err);
-    //   if (err.name === "ValidationError") {
-    //     return res.status(serverError).send({ message: err.message });
-    //   }
-    //   return res.status(serverError).send({ message: err.message });
-    // });
 };
 
 const getUser = (req, res) => {
@@ -46,11 +32,11 @@ const getUser = (req, res) => {
       console.error(err);
       if (err.name === "CastError") {
         return res.status(badRequest).send({ message: err.message });
-      } if (err.name === "DocumentNotFoundError") {
+      }
+      if (err.name === "DocumentNotFoundError") {
         return res.status(notFound).send({ message: err.message });
       }
-        return res.status(serverError).send({ message: err.message });
-
+      return res.status(serverError).send({ message: err.message });
     });
 };
 
