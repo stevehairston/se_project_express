@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "npx eslint .",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "start": "npm run dev"
+
   },
   "author": "Steve Hairston",
   "license": "ISC",
