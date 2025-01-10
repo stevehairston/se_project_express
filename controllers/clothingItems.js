@@ -6,10 +6,10 @@ const createItem = (req, res) => {
   console.log(req);
   console.log(req.body);
   const owner = req.user._id;
-  const { name, weather, imageURL } = req.body;
+  const { name, weather, imageUrl } = req.body;
 
   clothingItemSchema
-    .create({ name, weather, imageURL, owner })
+    .create({ name, weather, imageUrl, owner })
     .then((item) => {
       console.log(item);
       res.status(201).send({ data: item });
@@ -40,10 +40,10 @@ const getItems = (req, res) => {
 
 const updateItem = (req, res) => {
   const { itemId } = req.params;
-  const { imageURL } = req.body;
+  const { imageUrl } = req.body;
 
   clothingItemSchema
-    .findByIdAndUpdate(itemId, { $set: { imageURL } })
+    .findByIdAndUpdate(itemId, { $set: { imageUrl } })
     .orFail()
     .then((item) => {
       res.status(200).send({ data: item });
