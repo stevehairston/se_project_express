@@ -8,12 +8,14 @@
     "lint": "npx eslint .",
     "dev": "nodemon app.js",
     "start": "npm run dev"
-
   },
   "author": "Steve Hairston",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
     "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^6.6.1",
     "validator": "^13.12.0"
   },

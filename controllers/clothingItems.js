@@ -41,9 +41,13 @@ const getItems = (req, res) => {
 
 const deleteItem = (req, res) => {
   const { itemId } = req.params;
+  const userId = req.user._id;
+  if (itemId.owner.toString() !== userId) {
+    return res.status(403).json({ message: "Forbidden" });
+  }
 
   console.log(itemId);
-  clothingItemSchema
+  return clothingItemSchema
     .findByIdAndDelete(itemId)
     .orFail()
     .then((item) => {
