@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
-const { badRequest, notFound, serverError } = require("../utils/errors");
+const { badRequest, notFound, serverError, unauthorized, conflict } = require("../utils/errors");
 const JWT_SECRET = require("../utils/config");
 
 const getUsers = (req, res) => {
@@ -47,7 +47,7 @@ const createUser = (req, res) => {
     })
     .catch((err) => {
       if (err.code === 11000) {
-        return res.status(409).send({ message: "Email already exists." });
+        return res.status(conflict).send({ message: "Email already exists." });
       }
       if (err.name === "ValidationError") {
         return res
@@ -86,14 +86,18 @@ const getUser = (req, res) => {
 const login = async (req, res) => {
   const { email, password } = req.body;
 
+  if (!email || !password) {
+  return res.status(badRequest).send({ message: "Email and password are required" });
+}
+
   try {
     const user = await User.findUserByCredentials(email, password);
     const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
       expiresIn: "7d",
     });
-    res.send({ token });
+    return res.send({ token });
   } catch (error) {
-    res.status(401).send({ message: "Incorrect email or password" });
+    return res.status(unauthorized).send({ message: "Incorrect email or password" });
   }
 };
 
