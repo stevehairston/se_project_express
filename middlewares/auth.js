@@ -1,7 +1,6 @@
-// const token = authorization.replace("Bearer ", "");
 const jwt = require("jsonwebtoken");
 
-const JWT_SECRET = require("../utils/config");
+const { JWT_SECRET } = require("../utils/config");
 const { unauthorized } = require("../utils/errors");
 
 module.exports = (req, res, next) => {
@@ -13,13 +12,15 @@ module.exports = (req, res, next) => {
 
   const token = authorization.replace("Bearer ", "");
 
+  let payload;
+
   try {
-    const payload = jwt.verify(token, JWT_SECRET);
-    req.user = payload;
-    return next();
+    payload = jwt.verify(token, JWT_SECRET);
   } catch (err) {
     return res
       .status(unauthorized)
       .send({ message: "Invalid or expired token" });
   }
+  req.user = payload;
+  return next();
 };

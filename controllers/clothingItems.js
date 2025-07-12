@@ -12,7 +12,7 @@ const createItem = (req, res) => {
     .create({ name, weather, imageUrl, owner })
     .then((item) => {
       console.log(item);
-      res.status(201).send({ data: item });
+      res.status(201).send(item);
     })
     .catch((err) => {
       console.error(err);
@@ -42,19 +42,28 @@ const getItems = (req, res) => {
 const deleteItem = (req, res) => {
   const { itemId } = req.params;
   const userId = req.user._id;
-  if (itemId.owner.toString() !== userId) {
-    return res.status(403).json({ message: "Forbidden" });
-  }
 
   console.log(itemId);
   return clothingItemSchema
-    .findByIdAndDelete(itemId)
+    .findById(itemId)
     .orFail()
     .then((item) => {
-      res.send(item);
+      if (item.owner.toString() !== userId) {
+        const err = new Error("Forbidden");
+        err.statusCode = 403;
+        return Promise.reject(err);
+      }
+      return clothingItemSchema.findByIdAndDelete(itemId);
+    })
+    .then((item) => {
+      const cleanItem = item.toObject();
+      res.send(cleanItem);
     })
     .catch((err) => {
       console.error(err);
+      if (err.statusCode === 403) {
+        return res.status(403).send({ message: err.message });
+      }
       if (err.name === "CastError") {
         return res
           .status(badRequest)
@@ -80,7 +89,7 @@ const likeItem = (req, res) => {
       { new: true }
     )
     .orFail()
-    .then((item) => res.status(201).send(item))
+    .then((item) => res.status(200).send(item))
     .catch((err) => {
       console.error(err);
       if (err.name === "CastError") {

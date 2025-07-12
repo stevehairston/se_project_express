@@ -1,39 +1,14 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
-const { badRequest, notFound, serverError, unauthorized, conflict } = require("../utils/errors");
-const JWT_SECRET = require("../utils/config");
-
-const getUsers = (req, res) => {
-  User.find({})
-    .then((users) => res.send(users))
-    .catch((err) => {
-      console.error(err);
-      return res
-        .status(serverError)
-        .send({ message: "An error has occurred on the server" });
-    });
-};
-
-const getCurrentUser = (req, res) => {
-  const userId = req.user._id;
-
-  User.findById(userId)
-    .orFail()
-    .then((user) => res.send(user))
-    .catch((err) => {
-      console.error(err);
-      if (err.name === "CastError") {
-        return res.status(badRequest).send({ message: "Invalid user ID" });
-      }
-      if (err.name === "DocumentNotFoundError") {
-        return res.status(notFound).send({ message: "User not found" });
-      }
-      return res
-        .status(serverError)
-        .send({ message: "An error has occurred on the server" });
-    });
-};
+const {
+  badRequest,
+  notFound,
+  serverError,
+  unauthorized,
+  conflict,
+} = require("../utils/errors");
+const { JWT_SECRET } = require("../utils/config");
 
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
@@ -60,35 +35,14 @@ const createUser = (req, res) => {
     });
 };
 
-const getUser = (req, res) => {
-  const { userId } = req.params;
-  User.findById(userId)
-    .orFail()
-    .then((user) => res.send(user))
-    .catch((err) => {
-      console.error(err);
-      if (err.name === "CastError") {
-        return res
-          .status(badRequest)
-          .send({ message: "Invalid data provided" });
-      }
-      if (err.name === "DocumentNotFoundError") {
-        return res
-          .status(notFound)
-          .send({ message: "Id provided was not found" });
-      }
-      return res
-        .status(serverError)
-        .send({ message: "An error has occurred on the server" });
-    });
-};
-
 const login = async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-  return res.status(badRequest).send({ message: "Email and password are required" });
-}
+    return res
+      .status(badRequest)
+      .send({ message: "Email and password are required" });
+  }
 
   try {
     const user = await User.findUserByCredentials(email, password);
@@ -97,8 +51,30 @@ const login = async (req, res) => {
     });
     return res.send({ token });
   } catch (error) {
-    return res.status(unauthorized).send({ message: "Incorrect email or password" });
+    return res
+      .status(unauthorized)
+      .send({ message: "Incorrect email or password" });
   }
+};
+
+const getCurrentUser = (req, res) => {
+  const { _id } = req.user;
+
+  User.findById(_id)
+    .orFail()
+    .then((user) => res.send(user))
+    .catch((err) => {
+      console.error(err);
+      if (err.name === "CastError") {
+        return res.status(badRequest).send({ message: "Invalid user ID" });
+      }
+      if (err.name === "DocumentNotFoundError") {
+        return res.status(notFound).send({ message: "User not found" });
+      }
+      return res
+        .status(serverError)
+        .send({ message: "An error has occurred on the server" });
+    });
 };
 
 const updateUser = (req, res) => {
@@ -132,9 +108,7 @@ const updateUser = (req, res) => {
 };
 
 module.exports = {
-  getUsers,
   createUser,
-  getUser,
   login,
   getCurrentUser,
   updateUser,
