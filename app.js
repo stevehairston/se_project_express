@@ -6,7 +6,6 @@ const config = require("./utils/config");
 const { mongoUri } = config;
 
 const mainRouter = require("./routes/index");
-// const { login, createUser } = require("./controllers/users");
 
 const app = express();
 const { PORT = 3001 } = process.env;
