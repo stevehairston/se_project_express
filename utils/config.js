@@ -1,5 +1,6 @@
-const JWT_SECRET = '0*&Dfjla;dfg80-OIUnKVOupoN:do014789%^&#1';
+const JWT_SECRET = "0*&Dfjla;dfg80-OIUnKVOupoN:do014789%^&#1";
 
 module.exports = {
   JWT_SECRET,
+  mongoUri: "mongodb://localhost:27017/mydatabase",
 };

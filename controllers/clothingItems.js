@@ -2,16 +2,12 @@ const clothingItemSchema = require("../models/clothingItem");
 const { badRequest, notFound, serverError } = require("../utils/errors");
 
 const createItem = (req, res) => {
-  console.log(req.user._id);
-  console.log(req);
-  console.log(req.body);
   const owner = req.user._id;
   const { name, weather, imageUrl } = req.body;
 
   clothingItemSchema
     .create({ name, weather, imageUrl, owner })
     .then((item) => {
-      console.log(item);
       res.status(201).send(item);
     })
     .catch((err) => {
@@ -43,7 +39,6 @@ const deleteItem = (req, res) => {
   const { itemId } = req.params;
   const userId = req.user._id;
 
-  console.log(itemId);
   return clothingItemSchema
     .findById(itemId)
     .orFail()
@@ -81,7 +76,6 @@ const deleteItem = (req, res) => {
 };
 
 const likeItem = (req, res) => {
-  console.log(req.user._id);
   clothingItemSchema
     .findByIdAndUpdate(
       req.params.itemId,
@@ -109,7 +103,6 @@ const likeItem = (req, res) => {
 };
 
 const dislikeItem = (req, res) => {
-  console.log(req.user._id);
   clothingItemSchema
     .findByIdAndUpdate(
       req.params.itemId,
