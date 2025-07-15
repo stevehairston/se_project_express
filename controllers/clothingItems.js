@@ -1,5 +1,5 @@
 const clothingItemSchema = require("../models/clothingItem");
-const { badRequest, notFound, serverError } = require("../utils/errors");
+const { badRequest, notFound, forbidden, serverError } = require("../utils/errors");
 
 const createItem = (req, res) => {
   const owner = req.user._id;
@@ -45,7 +45,7 @@ const deleteItem = (req, res) => {
     .then((item) => {
       if (item.owner.toString() !== userId) {
         const err = new Error("Forbidden");
-        err.statusCode = 403;
+        err.statusCode = forbidden;
         return Promise.reject(err);
       }
       return clothingItemSchema.findByIdAndDelete(itemId);
@@ -56,8 +56,8 @@ const deleteItem = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
-      if (err.statusCode === 403) {
-        return res.status(403).send({ message: err.message });
+      if (err.statusCode === forbidden) {
+        return res.status(forbidden).send({ message: err.message });
       }
       if (err.name === "CastError") {
         return res
