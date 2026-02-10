@@ -5,7 +5,7 @@ TECHNOLOGIES
   * Express
   * MongoDB
 
-LINK TO BACKEND REPOSITORY
+LINK TO BACKEND REPOSITORY /n
 https://github.com/stevehairston/se_project_express.git
 
 ABOUT THE PROJECT
