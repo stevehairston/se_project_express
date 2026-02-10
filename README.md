@@ -5,6 +5,9 @@ TECHNOLOGIES
   * Express
   * MongoDB
 
+LINK TO BACKEND REPOSITORY
+https://github.com/stevehairston/se_project_express.git
+
 ABOUT THE PROJECT
 REST-based API's act as the endpoints for this application. Simple user authorization
 is required for modifiying objects. Error-handling is employed to correctly process
